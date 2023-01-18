@@ -59,3 +59,12 @@ button {
   padding: 0.5em;
   cursor: pointer;
 }
+
+.fav-container h3{
+  text-align: center;
+}
+
+.buttons-container{
+  display: flex;
+  justify-content: space-between;
+}

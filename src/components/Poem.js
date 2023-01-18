@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 
-function Poem({poem, onDeletePoem}) {
+function Poem({ poem, onDeletePoem, onUpdateFavourites }) {
+  const [read, setRead] = useState(false);
+  const { id, title, content, author } = poem;
 
-  const [read, setRead] = useState(false) 
+  const [isFavourite, setIsFavourite] = useState(false);
 
-  const {id, title, content, author} = poem
-
-  function handlePoemDelete(){
+  function handlePoemDelete() {
     fetch(`http://localhost:8004/poems/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
-    .then(r => r.json())
-    .then(data => {
-      onDeletePoem(id)
-    })
+      .then((r) => r.json())
+      .then((data) => {
+        onDeletePoem(id);
+      });
+  }
+
+  function handleFavouriteClick(){
+    onUpdateFavourites(id)
+    setIsFavourite(!isFavourite)
   }
   return (
     <div>
@@ -22,8 +27,15 @@ function Poem({poem, onDeletePoem}) {
       <p>
         <strong>- By {author}</strong>
       </p>
-      <button onClick={()=> setRead(!read)}>Mark as {read ? "unread" : "read"}</button>
-      <button style={{float: "right"}} onClick={handlePoemDelete}>Delete</button>
+      <div className="buttons-container">
+        <button onClick={() => setRead(!read)}>
+          Mark as {read ? "unread" : "read"}
+        </button>
+        <button onClick={handleFavouriteClick}>{isFavourite ? "Remove From" : "Add to" } Favourites</button>
+        <button onClick={handlePoemDelete}>
+          Delete
+        </button>
+      </div>
     </div>
   );
 }
